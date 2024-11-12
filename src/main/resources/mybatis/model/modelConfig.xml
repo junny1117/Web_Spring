@@ -4,6 +4,8 @@
 
 <configuration>
     <typeAliases>
-        <typeAlias type="com.example.project.vo.BoardVO" alias="boardVO" />
+        <typeAlias type="com.example.project.board.vo.BoardVO" alias="boardVO" />
+        <typeAlias type="com.example.project.comment.vo.CommentVO" alias="commentVO" />
+        <typeAlias type="com.example.project.member.vo.MemberVO" alias="memberVO" />
     </typeAliases>
 </configuration>

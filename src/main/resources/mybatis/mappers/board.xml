@@ -16,10 +16,10 @@
         ]]>
     </select>
 
-    <insert id="insertArticle" parameterType="boardVO">
+    <insert id="insertArticle" parameterType="map">
         <![CDATA[
-            insert into tbl_board(articleNO, title, content, writeDate)
-            values (#{articleNO}, #{title}, #{content}, sysdate)
+            insert into tbl_board(articleNO, title, content, writeDate, writer)
+            values (#{articleNO}, #{title}, #{content}, sysdate, #{writer})
         ]]>
     </insert>
 
@@ -41,12 +41,34 @@
         ]]>
     </select>
 
-    <update id="updateArticle" parameterType="boardVO">
+    <update id="updateArticle" parameterType="map">
         <![CDATA[
             update tbl_board
             set title=#{title}, content=#{content}
             where articleNO=#{articleNO}
         ]]>
     </update>
+
+    <!-- board 테이블 변경사항 적용 -->
+    <select id="selectHitCnt" resultType="boardVO" parameterType="String">
+        select articleNO, hitCnt from tbl_board where articleNO=#{articleNO}
+    </select>
+
+    <update id="updateHitCnt" parameterType="boardVO">
+        update tbl_board set hitCnt=#{hitCnt} where articleNO=#{articleNO}
+    </update>
+
+    <!-- 파일 업로드 -->
+    <insert id="insertFile" parameterType="hashmap">
+        insert into tbl_file(boardNO, originalFileName, storedFileName, fileSize, memberID)
+        values (#{BOARD_IDX}, #{ORIGINAL_FILE_NAME}, #{STORED_FILE_NAME}, #{FILE_SIZE}, 'ADMIN')
+    </insert>
+
+    <!-- 파일 다운로드 -->
+    <select id="selectFileList" parameterType="String" resultType="hashmap">
+        select idx, originalFileName, round(fileSize / 1024) as file_size
+        from tbl_file
+        where boardNO=#{articleNO} and deleteCHK='N'
+    </select>
 
 </mapper>

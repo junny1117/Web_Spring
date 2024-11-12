@@ -22,44 +22,71 @@
     />
 </head>
 <body>
-<div class="container text-center">
-    <div class="row justify-content-sm-center" style="margin: 30px; width: 800px">
-        <div class="col-9 text-start text-primary">
-            <ul>
-                <li><h3>게시판 목록창</h3></li>
-            </ul>
-        </div>
-        <div class="col-3 justify-content-end">
+<%-- 수정 --%>
+<div class="container px-4 ms-5">
+    <h1 class="mt-4">AISW 게시판</h1>
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb mb-5">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">일반게시판</li>
+        </ol>
+    </nav>
+
+    <div class="card mb-4">
+        <div class="card-header bg-warning-subtle py-2">
+            <i class="fas fa-table me-1"></i>
+            일반 게시판
+            <!-- 회원인 경우 새글작성 버튼 활성화 -->
+            <c:if test="${isLogOn == true && member != null}">
+            <span class="position-absolute top-0 end-0 mt-1 pe-3">
             <a href="${contextPath}/board/boardForm.do">
-                <button type="button" class="btn btn-success">새글작성</button>
+                <button class="btn btn-sm btn-success" type="button">새글작성</button>
             </a>
+            </span>
+            </c:if>
         </div>
-        <table class="table">
-            <thead>
-            <tr class="table-info">
-                <th scope="col">글번호</th>
-                <th scope="col">글제목</th>
-                <th scope="col">내용</th>
-                <th scope="col">작성일</th>
-            </tr>
-            </thead>
-            <tbody>
-            <c:forEach var="article" items="${articlesList}">
+        <div class="card-body">
+            <table id="datatablesSimple">
+                <thead class="bg-info">
+                <tr>
+                    <th>글번호</th>
+                    <th>제목</th>
+                    <th>조회수</th>
+                    <th>작성자</th>
+                    <th>작성일</th>
+                </tr>
+                </thead>
+                <tfoot>
+                <tr>
+                    <th>글번호</th>
+                    <th>제목</th>
+                    <th>조회수</th>
+                    <th>작성자</th>
+                    <th>작성일</th>
+                </tr>
+                </tfoot>
+                <tbody>
+                <c:forEach var="article" items="${articlesList}">
                 <tr>
                     <td>${article.articleNO}</td>
-                    <td><a href="${contextPath}/board/viewArticle.do?articleNO=${article.articleNO}">${article.title}</a></td>
-                    <td>${article.content}</td>
+                    <td>
+                        <span class="d-inline-block text-truncate" style="max-width: 150px;">
+                            <a href="${contextPath}/board/viewArticle.do?articleNO=${article.articleNO}">${article.title}</a>
+                        </span>
+                    </td>
+                    <td>${article.hitCnt}</td>
+                    <td>${article.writer}</td>
                     <td>${article.writeDate}</td>
                 </tr>
-            </c:forEach>
-            </tbody>
-        </table>
+                </c:forEach>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 </body>
 <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"
-></script>
+        crossorigin="anonymous"></script>
 </html>
